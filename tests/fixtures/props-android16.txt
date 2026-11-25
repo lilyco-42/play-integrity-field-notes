@@ -1,0 +1,4 @@
+ro.product.model=PJD110
+ro.product.device=OP5929L1
+ro.build.version.release=16
+ro.build.version.sdk=36

@@ -1,0 +1,15 @@
+#!/bin/sh
+# fixture getprop: answers from $PI_FIXTURE_PROPS if present, else built-in defaults
+P="${PI_FIXTURE_PROPS:-}"
+key="${1:-}"
+if [ -n "$P" ] && [ -f "$P" ]; then
+  v=$(grep -m1 "^$key=" "$P" 2>/dev/null | cut -d= -f2-)
+  [ -n "$v" ] && { echo "$v"; exit 0; }
+fi
+case "$key" in
+  ro.product.model)   echo "PJD110" ;;
+  ro.product.device)  echo "OP5929L1" ;;
+  ro.build.version.release) echo "16" ;;
+  ro.build.version.sdk) echo "${PI_FAKE_SDK:-36}" ;;
+  *) echo "" ;;
+esac

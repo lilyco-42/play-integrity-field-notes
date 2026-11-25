@@ -1,0 +1,30 @@
+#!/bin/sh
+# adb stub for the offline suite.
+# $ADB_STUB_ROOT relocates every /data/local/tmp/ path into a scratch dir, so the
+# wrapper's push -> su -c "sh <path>" round trip can be exercised without a phone.
+ROOT="${ADB_STUB_ROOT:-/tmp}"
+log() { [ -n "${ADB_LOG:-}" ] && echo "adb $*" >> "$ADB_LOG"; }
+log "$@"
+if [ "$1" = "-s" ]; then shift 2; fi
+c="$1"; shift
+case "$c" in
+  devices)
+    printf 'List of devices attached\n192.168.10.127:44125\tdevice\n'
+    ;;
+  connect) exit 0 ;;
+  push)
+    src="$1"; dst="$2"
+    case "$dst" in /data/local/tmp/*) dst="$ROOT$dst" ;; esac
+    mkdir -p "$(dirname "$dst")" || exit 1
+    cp "$src" "$dst"
+    ;;
+  shell)
+    cmd="$*"
+    case "$cmd" in
+      su\ -c\ \"*\") cmd="${cmd#su -c \"}"; cmd="${cmd%\"}" ;;
+    esac
+    cmd="$(printf '%s' "$cmd" | sed "s|/data/local/tmp/|$ROOT/data/local/tmp/|g")"
+    sh -c "$cmd"
+    ;;
+  *) exit 0 ;;
+esac

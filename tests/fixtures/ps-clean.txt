@@ -1,0 +1,4 @@
+PID ARGS
+ 1617 zygisk-ptrace64 monitor
+ 1764 zygiskd64
+ 5020 zygiskd64-zygisk-assistant companion

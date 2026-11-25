@@ -1,0 +1,4 @@
+#!/bin/sh
+# fixture am: records what would have been done, always succeeds
+echo "[stub am] $*"
+exit 0

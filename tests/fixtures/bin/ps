@@ -1,0 +1,4 @@
+#!/bin/sh
+# fixture ps: dumps $PI_FIXTURE_PS lines when asked with -A -o
+if [ -n "${PI_FIXTURE_PS:-}" ] && [ -f "$PI_FIXTURE_PS" ]; then cat "$PI_FIXTURE_PS"; fi
+exit 0

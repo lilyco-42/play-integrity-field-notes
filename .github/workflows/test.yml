@@ -1,0 +1,38 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline:
+    name: offline suite (no phone, no root)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: shellcheck (advisory)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq shellcheck openssl
+          shellcheck -S warning scripts/*.sh tests/*.sh || true
+
+      - name: syntax
+        run: |
+          for f in scripts/*.sh tests/*.sh; do sh -n "$f"; done
+
+      - name: python syntax
+        run: python3 -m py_compile scripts/keybox-check.py
+
+      - name: offline suite
+        run: sh tests/run-tests.sh -v
+
+      - name: the suite must actually have assertions
+        run: |
+          out="$(sh tests/run-tests.sh 2>&1 | tail -n 3)"
+          echo "$out"
+          echo "$out" | grep -q 'all tests passed'

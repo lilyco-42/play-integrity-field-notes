@@ -1,0 +1,4 @@
+#!/bin/sh
+# fixture logcat: dumps $PI_FIXTURE_LOG lines on -d
+if [ -n "${PI_FIXTURE_LOG:-}" ] && [ -f "$PI_FIXTURE_LOG" ]; then cat "$PI_FIXTURE_LOG"; fi
+exit 0

@@ -1,0 +1,6 @@
+#!/bin/sh
+# fixture pidof: only reports what $PI_FIXTURE_PIDS lists (space separated names)
+for n in ${PI_FIXTURE_PIDS:-com.android.vending TrickyStore keystore2}; do
+  [ "$n" = "${1:-}" ] && { echo "4242"; exit 0; }
+done
+exit 1

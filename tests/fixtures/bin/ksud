@@ -1,0 +1,2 @@
+#!/bin/sh
+echo "KernelSU 4.2.0-1-g904c60d1 (uapi: 2)"
