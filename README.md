@@ -239,7 +239,25 @@ sh tests/run-tests.sh -v       # 失败时把脚本输出也打出来
 其中一条测试专门证明 doctor **确实只读**：跑之前和跑之后对整棵 fixture 树
 逐文件比对 sha256，必须完全一致。
 
-## 6. 硬约束（血的教训）
+## 6. 安装与分发
+
+同一个包已进 mpkg 注册表（内容寻址 + 本机回放回执）：
+
+```bash
+# 从注册表装（含 content-id 门禁与可选本机完整回放）
+python3 mpkg.py install play-integrity-field-notes -r lilyco-42/mpkg-registry --verify
+```
+
+| 渠道 | 地址 |
+|---|---|
+| 本仓库（可读版、随仓库更新） | https://github.com/lilyco-42/play-integrity-field-notes |
+| mpkg 注册表（可校验、带回执） | https://github.com/lilyco-42/mpkg-registry |
+
+包内容 = 本仓库的 `scripts/`（作 `artifacts/`）+ `tests/` + `docs/` + 三篇 atoms
+（四条根因 / 修复设计 / 验证证据）。`mpkg.json` 的 `steps` 就是本仓库的测试套件，
+回放通过才生成回执——所以注册表里那个 `attestations` 计数是实算的，不是自报的。
+
+## 7. 硬约束（血的教训）
 
 > **reboot / am start / input keyevent / 模块安装 / \`ksud feature set\` / \`pm clear\` 这类
 > 改变手机运行态的动作，执行前必须先说明风险、影响范围、可逆性和回退命令，等确认再动。**
@@ -251,7 +269,7 @@ sh tests/run-tests.sh -v       # 失败时把脚本输出也打出来
 
 ---
 
-## 7. 文档索引
+## 8. 文档索引
 
 - [docs/01-play-store-crash.md](docs/01-play-store-crash.md) — RECEIVER_EXPORTED 崩溃的完整分析
 - [docs/02-pif-two-configs.md](docs/02-pif-two-configs.md) — 两份 pif.json 哪个才算数
